@@ -1,0 +1,2 @@
+rootProject.name = 'PlantaLivre'
+include ':app'
