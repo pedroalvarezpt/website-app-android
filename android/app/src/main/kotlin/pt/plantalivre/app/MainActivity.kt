@@ -2,6 +2,7 @@ package pt.plantalivre.app
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.webkit.*
@@ -49,6 +50,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupWebView() {
         webView.apply {
+            // Set green background to prevent black screen
+            setBackgroundColor(Color.parseColor("#4CAF50"))
+            
             settings.apply {
                 javaScriptEnabled = true
                 domStorageEnabled = true
@@ -72,6 +76,11 @@ class MainActivity : AppCompatActivity() {
             addJavascriptInterface(AppBridge(this@MainActivity), "AndroidBridge")
 
             webViewClient = object : WebViewClient() {
+                override fun onPageStarted(view: WebView?, url: String?, favicon: android.graphics.Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                    progressBar.visibility = View.VISIBLE
+                }
+                
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     progressBar.visibility = View.GONE

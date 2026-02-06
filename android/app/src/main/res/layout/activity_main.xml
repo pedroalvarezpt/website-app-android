@@ -3,16 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/plantalivre_primary">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/plantalivre_primary">
 
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/plantalivre_primary" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -20,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_gravity="top"
+            android:progressTint="@color/white"
             android:visibility="gone" />
 
     </FrameLayout>
