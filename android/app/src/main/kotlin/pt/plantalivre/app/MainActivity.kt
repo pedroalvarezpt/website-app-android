@@ -37,8 +37,7 @@ class MainActivity : AppCompatActivity() {
         setupWebView()
         setupSwipeRefresh()
 
-        // Load initial URL or deep link
-        val deepLinkUrl = intent?.getStringExtra(EXTRA_DEEP_LINK_URL)
+        val deepLinkUrl = intent?.data?.toString()
         val initialUrl = if (deepLinkUrl != null && deepLinkUrl.contains("plantalivre.pt")) {
             deepLinkUrl
         } else {
@@ -68,10 +67,6 @@ class MainActivity : AppCompatActivity() {
                 
                 allowFileAccess = true
                 allowContentAccess = true
-                
-                // Enhanced security
-                javaScriptCanOpenWindowsAutomatically = false
-                mediaPlaybackRequiresUserGesture = false
             }
 
             addJavascriptInterface(AppBridge(this@MainActivity), "AndroidBridge")
