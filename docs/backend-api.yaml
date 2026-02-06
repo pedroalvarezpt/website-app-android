@@ -1,0 +1,34 @@
+openapi: 3.0.0
+info:
+  title: PlantaLivre App API
+  version: 1.0.0
+  description: Backend API for PlantaLivre mobile apps
+
+paths:
+  /api/app/push/register:
+    post:
+      summary: Register device for push notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                platform:
+                  type: string
+                  enum: [android, ios]
+                token:
+                  type: string
+                  description: FCM token (Android) or APNs token (iOS)
+                user_id:
+                  type: string
+                  description: Optional user ID if logged in
+              required:
+                - platform
+                - token
+      responses:
+        '200':
+          description: Token registered successfully
+        '400':
+          description: Invalid request
