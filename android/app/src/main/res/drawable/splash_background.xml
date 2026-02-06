@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Simple green background -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+    <!-- Background color -->
     <item android:drawable="@color/plantalivre_primary" />
+    
+    <!-- Logo centered with proper sizing -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/ic_launcher"
+            android:tileMode="disabled" />
+    </item>
 </layer-list>

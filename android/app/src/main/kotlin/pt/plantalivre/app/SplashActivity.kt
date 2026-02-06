@@ -1,23 +1,37 @@
 package pt.plantalivre.app
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 /**
- * Splash Activity
+ * Splash Activity with Android 12+ Splash Screen API
  * 
- * Handles:
- * - App launch with splash screen
- * - Deep links (plantalivre.pt URLs)
- * - Quick transition to MainActivity
+ * Features:
+ * - Native splash screen with logo
+ * - Smooth transition to MainActivity
+ * - Deep link support
+ * - Backward compatible to API 24
  */
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Install splash screen (Android 12+ native, backported to older versions)
+        val splashScreen = installSplashScreen()
+        
         super.onCreate(savedInstanceState)
         
+        // Keep splash visible while loading
+        splashScreen.setKeepOnScreenCondition { false }
+        
+        // Navigate to MainActivity
+        navigateToMain()
+    }
+    
+    private fun navigateToMain() {
         // Get deep link URL if present
         val deepLinkUrl = intent?.data?.toString()
         
@@ -28,7 +42,7 @@ class SplashActivity : AppCompatActivity() {
                 putExtra(MainActivity.EXTRA_DEEP_LINK_URL, deepLinkUrl)
             }
             
-            // Clear back stack
+            // Preserve intent flags
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         

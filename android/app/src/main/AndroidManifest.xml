@@ -16,12 +16,11 @@
         android:usesCleartextTraffic="false"
         tools:targetApi="31">
         
-        <!-- Main Activity (Direct Launcher) -->
+        <!-- Splash Activity (Launcher) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@style/Theme.PlantaLivre">
+            android:theme="@style/Theme.PlantaLivre.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -40,6 +39,13 @@
                     android:host="www.plantalivre.pt" />
             </intent-filter>
         </activity>
+        
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/Theme.PlantaLivre" />
         
         <!-- Display cutout support (notch) -->
         <meta-data
