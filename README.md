@@ -1,144 +1,227 @@
 # PlantaLivre.pt - Android App
 
-WebView wrapper nativo para https://plantalivre.pt
+**WebView nativo em Kotlin** para https://plantalivre.pt
+
+[![Status](https://img.shields.io/badge/status-funcional-brightgreen)]() 
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.20-purple)]() 
+[![Min SDK](https://img.shields.io/badge/minSdk-24-blue)]() 
+[![Target SDK](https://img.shields.io/badge/targetSdk-34-blue)]()
+
+---
 
 ## 🎯 Configurações Fixas
 
-```
-SITE_URL=https://plantalivre.pt
-DISABLE_ZOOM=true
-USER_AGENT="PlantalivreApp/1.0"
-MIN_ANDROID_SDK=24
+```kotlin
+SITE_URL = "https://plantalivre.pt"
+DISABLE_ZOOM = true
+USER_AGENT = "PlantalivreApp/1.0"
+MIN_ANDROID_SDK = 24 (Android 7.0)
+TARGET_SDK = 34 (Android 14)
 ```
 
-## 📱 Funcionalidades Implementadas
+---
 
-- ✅ WebView básico com plantalivre.pt
+## ✅ Funcionalidades Implementadas
+
+### Core WebView
+- ✅ WebView com https://plantalivre.pt
 - ✅ Zoom desativado
 - ✅ User Agent customizado
-- ✅ Interceptação de URLs (links externos abrem no browser)
-- ✅ Injeção completa de JS (app-theme.js)
-- ✅ JavaScript Bridge (AndroidBridge)
 - ✅ Swipe to refresh
 - ✅ Progress bar
 - ✅ Back button navigation
-- 🟡 Push notifications (FCM) - Pronto para implementar
-- 🟡 Ícones da app - Aguarda assets
 
-## 🚀 Quick Start
+### JavaScript Bridge (Kotlin ↔ JS)
+- ✅ `window.AndroidBridge.openExternal(url)`
+- ✅ `window.AndroidBridge.share(title, text, url)`
+- ✅ `window.AndroidBridge.showToast(message)`
+- ✅ `window.AndroidBridge.getAppVersion()`
+- ✅ `window.AndroidBridge.hasPermission(permission)`
 
-### 1. Clonar Repositório
+### URL Interception
+- ✅ Links `plantalivre.pt` → WebView
+- ✅ Links externos → Browser nativo
+- ✅ Blacklist de domínios
+
+### JavaScript Injection
+- ✅ `app-theme.js` injetado automaticamente
+- ✅ `window.PLANTALIVRE_APP = true`
+- ✅ `window.PLANTALIVRE_PLATFORM = 'android'`
+- ✅ API `window.PlantaLivreApp` simplificada
+
+### Documentação
+- ✅ 7 ficheiros Markdown completos
+- ✅ Guias passo-a-passo
+- ✅ Troubleshooting
+
+### Pronto para Implementar
+- 🟡 Push Notifications (FCM) - [Guia](android/FCM_SETUP.md)
+- 🟡 Ícones da app - [Guia](android/ICON_INSTRUCTIONS.md)
+
+---
+
+## 🚀 Quick Start (5 minutos)
+
+Ver guia completo: **[QUICK_START.md](QUICK_START.md)**
+
 ```bash
-git clone https://github.com/pedroalvarezpt/website-app-android.git
-cd website-app-android
+# 1. Clone/Pull
+cd C:\Users\SIPC018\StudioProjects\website-app-android
+git pull
+
+# 2. Abre no Android Studio
+# Seleciona pasta: android/
+
+# 3. Aguarda Gradle Sync
+
+# 4. Run (Shift+F10)
 ```
 
-### 2. Abrir no Android Studio
-1. Open Android Studio
-2. File → Open
-3. Selecionar pasta `android/`
-4. Aguardar Gradle sync
-5. Run (Shift+F10)
+---
 
-### 3. Testar no Emulador/Device
-- Emulador: API 24+ (Android 7.0+)
-- Device físico: USB debugging ativado
-
-## 📚 Documentação
-
-- [Development Log](docs/development-log.md) - Status e roadmap
-- [Play Store Guide](docs/playstore-guide.md) - Checklist para publicação
-- [Backend API](docs/backend-api.yaml) - Especificação da API
-- [FCM Setup](android/FCM_SETUP.md) - Push notifications
-- [Icon Instructions](android/ICON_INSTRUCTIONS.md) - Como adicionar ícones
-
-## 🔧 Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 website-app-android/
-├── android/                    # Projeto Android nativo
+├── android/                          # Projeto Android Studio
 │   ├── app/
 │   │   ├── src/main/
 │   │   │   ├── kotlin/pt/plantalivre/app/
-│   │   │   │   ├── MainActivity.kt
-│   │   │   │   └── AppBridge.kt       # JavaScript Bridge
+│   │   │   │   ├── MainActivity.kt        ← WebView principal
+│   │   │   │   └── AppBridge.kt           ← JavaScript Bridge
 │   │   │   ├── assets/
-│   │   │   │   └── app-theme.js       # JS injection
+│   │   │   │   └── app-theme.js           ← JS injetado
 │   │   │   ├── res/
 │   │   │   │   ├── layout/
+│   │   │   │   │   └── activity_main.xml
 │   │   │   │   ├── values/
-│   │   │   │   └── mipmap-*/          # App icons
+│   │   │   │   │   ├── strings.xml
+│   │   │   │   │   ├── colors.xml
+│   │   │   │   │   └── themes.xml
+│   │   │   │   └── mipmap-*/              ← App icons (aguarda)
 │   │   │   └── AndroidManifest.xml
-│   │   └── build.gradle
-│   ├── build.gradle
+│   │   └── build.gradle                   ← Dependencies
+│   ├── build.gradle                       ← Project config
 │   ├── settings.gradle
 │   ├── FCM_SETUP.md
 │   ├── ICON_INSTRUCTIONS.md
 │   └── README.md
 ├── docs/
-│   ├── development-log.md
-│   ├── playstore-guide.md
-│   └── backend-api.yaml
-├── shared/
-│   └── js/
-│       └── app-theme.js           # Original (reference)
-├── .gitignore
-└── README.md
+│   ├── development-log.md                 ← Status e roadmap
+│   ├── playstore-guide.md                 ← Play Store checklist
+│   └── backend-api.yaml                   ← API spec
+├── shared/js/
+│   └── app-theme.js                       ← JS original
+├── README.md                              ← Este ficheiro
+├── QUICK_START.md                         ← Guia rápido
+├── PROJECT_VALIDATION.md                  ← Validação completa
+└── setup-git.sh                           ← Git helper script
 ```
-
-## 🔗 JavaScript Bridge API
-
-Funções disponíveis no WebView:
-
-```javascript
-// Verificar se está na app
-if (window.PLANTALIVRE_APP) {
-  console.log('Running in app!');
-  console.log('Platform:', window.PLANTALIVRE_PLATFORM); // 'android'
-}
-
-// Abrir URL externa
-window.AndroidBridge.openExternal('https://example.com');
-
-// Partilhar conteúdo
-window.AndroidBridge.share('Título', 'Texto', 'https://url.com');
-
-// Mostrar toast
-window.AndroidBridge.showToast('Mensagem!');
-
-// Obter versão da app
-var version = window.AndroidBridge.getAppVersion();
-
-// API simplificada via PlantaLivreApp
-window.PlantaLivreApp.openExternal('https://example.com');
-window.PlantaLivreApp.share('Title', 'Text', 'URL');
-window.PlantaLivreApp.toast('Message');
-```
-
-## 📦 Build para Produção
-
-### APK (teste)
-```bash
-cd android
-./gradlew assembleRelease
-```
-
-### AAB (Google Play)
-```bash
-./gradlew bundleRelease
-```
-
-## 🎉 Próximos Passos
-
-1. **Adicionar ícones** - Ver [ICON_INSTRUCTIONS.md](android/ICON_INSTRUCTIONS.md)
-2. **Implementar FCM** - Ver [FCM_SETUP.md](android/FCM_SETUP.md)
-3. **Customizar app-theme.js** - Ajustar seletores CSS
-4. **Testar em device real**
-5. **Seguir Play Store Guide** para publicação
 
 ---
 
-**Versão**: 1.0.0  
-**Package**: pt.plantalivre.app  
-**Min SDK**: 24 (Android 7.0)  
-**Target SDK**: 34 (Android 14)
+## 🔧 Tecnologias
+
+| Componente | Tecnologia | Versão |
+|------------|------------|--------|
+| **Linguagem** | Kotlin | 1.9.20 |
+| **Build System** | Gradle | 8.2 |
+| **Min Android** | API 24 | Android 7.0 |
+| **Target Android** | API 34 | Android 14 |
+| **WebView** | Android WebView | System |
+| **UI** | XML Layouts | - |
+| **Dependencies** | AndroidX | Latest |
+
+---
+
+## 📊 Código
+
+```
+Linhas de Código:
+- MainActivity.kt:  ~175 linhas Kotlin
+- AppBridge.kt:     ~65 linhas Kotlin
+- app-theme.js:     ~120 linhas JavaScript
+
+Total: ~360 linhas (sem contar XML/docs)
+```
+
+---
+
+## 🧪 Como Testar
+
+### Teste Básico
+```bash
+# Abre Android Studio
+# Run no emulador/device
+# Verifica que plantalivre.pt carrega
+```
+
+### Teste JavaScript Bridge
+```javascript
+// Chrome DevTools: chrome://inspect
+window.AndroidBridge.showToast('Hello!');
+window.AndroidBridge.getAppVersion();
+window.PlantaLivreApp.share('Título', 'Texto', 'https://plantalivre.pt');
+```
+
+### Build APK
+```bash
+cd android
+.\gradlew assembleDebug
+# Output: app/build/outputs/apk/debug/app-debug.apk
+```
+
+---
+
+## 📚 Documentação Completa
+
+| Documento | Descrição |
+|-----------|----------|
+| [QUICK_START.md](QUICK_START.md) | Guia rápido 5 minutos |
+| [PROJECT_VALIDATION.md](PROJECT_VALIDATION.md) | Validação completa do projeto |
+| [docs/development-log.md](docs/development-log.md) | Status e histórico |
+| [docs/playstore-guide.md](docs/playstore-guide.md) | Checklist Play Store |
+| [docs/backend-api.yaml](docs/backend-api.yaml) | API specification |
+| [android/FCM_SETUP.md](android/FCM_SETUP.md) | Push notifications setup |
+| [android/ICON_INSTRUCTIONS.md](android/ICON_INSTRUCTIONS.md) | Como adicionar ícones |
+
+---
+
+## 🎯 Próximos Passos
+
+1. ✅ **Código funcional** - COMPLETO
+2. ✅ **Documentação** - COMPLETO
+3. 🟡 **Adicionar ícones** - [Ver guia](android/ICON_INSTRUCTIONS.md)
+4. 🟡 **Testar em device real**
+5. 🟡 **Implementar FCM** (opcional) - [Ver guia](android/FCM_SETUP.md)
+6. 🟡 **Play Store submission** - [Ver checklist](docs/playstore-guide.md)
+
+---
+
+## 🐛 Troubleshooting
+
+Ver [QUICK_START.md](QUICK_START.md) secção Troubleshooting para:
+- Gradle sync issues
+- SDK not found
+- WebView não carrega
+- JavaScript Bridge não responde
+
+---
+
+## 📞 Suporte
+
+- **Issues**: [GitHub Issues](https://github.com/pedroalvarezpt/website-app-android/issues)
+- **Docs**: Ver pasta `docs/`
+- **Quick Help**: Ver [QUICK_START.md](QUICK_START.md)
+
+---
+
+## 📄 Licença
+
+Proprietário - PlantaLivre.pt
+
+---
+
+**Status Atual**: 🟢 **FUNCIONAL E PRONTO PARA TESTAR**
+
+**Última Atualização**: 06-Fev-2026 22:23 WET
