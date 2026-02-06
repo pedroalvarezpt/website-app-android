@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Main App Theme -->
     <style name="Theme.PlantaLivre" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/green_primary</item>
-        <item name="colorPrimaryVariant">@color/green_primary</item>
+        <item name="colorPrimary">@color/plantalivre_primary</item>
+        <item name="colorPrimaryVariant">@color/plantalivre_dark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="android:statusBarColor">@color/green_primary</item>
+        <item name="colorSecondary">@color/plantalivre_accent</item>
+        <item name="colorSecondaryVariant">@color/plantalivre_light</item>
+        <item name="android:statusBarColor">@color/plantalivre_primary</item>
+        <item name="android:navigationBarColor">@color/plantalivre_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    
+    <!-- Splash Screen Theme -->
+    <style name="Theme.PlantaLivre.Splash" parent="Theme.PlantaLivre">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:statusBarColor">@color/plantalivre_primary</item>
+        <item name="android:navigationBarColor">@color/plantalivre_primary</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>

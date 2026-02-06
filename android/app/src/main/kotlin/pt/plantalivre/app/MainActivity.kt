@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val SITE_URL = "https://plantalivre.pt"
         private const val USER_AGENT = "PlantalivreApp/1.0"
+        const val EXTRA_DEEP_LINK_URL = "deep_link_url"
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -36,7 +37,15 @@ class MainActivity : AppCompatActivity() {
         setupWebView()
         setupSwipeRefresh()
 
-        webView.loadUrl(SITE_URL)
+        // Load initial URL or deep link
+        val deepLinkUrl = intent?.getStringExtra(EXTRA_DEEP_LINK_URL)
+        val initialUrl = if (deepLinkUrl != null && deepLinkUrl.contains("plantalivre.pt")) {
+            deepLinkUrl
+        } else {
+            SITE_URL
+        }
+        
+        webView.loadUrl(initialUrl)
     }
 
     private fun setupWebView() {
@@ -59,6 +68,10 @@ class MainActivity : AppCompatActivity() {
                 
                 allowFileAccess = true
                 allowContentAccess = true
+                
+                // Enhanced security
+                javaScriptCanOpenWindowsAutomatically = false
+                mediaPlaybackRequiresUserGesture = false
             }
 
             addJavascriptInterface(AppBridge(this@MainActivity), "AndroidBridge")
@@ -129,6 +142,11 @@ class MainActivity : AppCompatActivity() {
         swipeRefresh.setOnRefreshListener {
             webView.reload()
         }
+        swipeRefresh.setColorSchemeResources(
+            R.color.plantalivre_primary,
+            R.color.plantalivre_accent,
+            R.color.plantalivre_light
+        )
     }
 
     private fun injectAppTheme() {
@@ -175,5 +193,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        webView.destroy()
     }
 }
