@@ -59,6 +59,11 @@ class MainActivity : AppCompatActivity() {
         webView.apply {
             setBackgroundColor(Color.parseColor("#4CAF50"))
             
+            // Enable swipe refresh only when at top
+            setOnScrollChangeListener { _, _, scrollY, _, _ ->
+                swipeRefresh.isEnabled = scrollY == 0
+            }
+            
             settings.apply {
                 javaScriptEnabled = true
                 domStorageEnabled = true
@@ -94,11 +99,10 @@ class MainActivity : AppCompatActivity() {
                     progressBar.visibility = View.GONE
                     swipeRefresh.isRefreshing = false
                     
-                    // Hide loading overlay on first load with delay to ensure content is rendered
                     if (isFirstLoad) {
                         handler.postDelayed({
                             hideLoadingOverlay()
-                        }, 800) // Wait 800ms after onPageFinished to ensure content is visible
+                        }, 800)
                         isFirstLoad = false
                     }
                     
@@ -162,7 +166,7 @@ class MainActivity : AppCompatActivity() {
     private fun hideLoadingOverlay() {
         loadingOverlay.animate()
             .alpha(0f)
-            .setDuration(500) // 500ms fade out
+            .setDuration(500)
             .withEndAction {
                 loadingOverlay.visibility = View.GONE
             }
