@@ -5,8 +5,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.webkit.*
 import android.view.View
+import android.webkit.*
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
     private lateinit var swipeRefresh: SwipeRefreshLayout
+    private lateinit var loadingScreen: FrameLayout
+    private var isFirstLoad = true
 
     companion object {
         private const val SITE_URL = "https://plantalivre.pt"
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById(R.id.webView)
         progressBar = findViewById(R.id.progressBar)
         swipeRefresh = findViewById(R.id.swipeRefresh)
+        loadingScreen = findViewById(R.id.loadingScreen)
 
         setupWebView()
         setupSwipeRefresh()
@@ -50,7 +54,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupWebView() {
         webView.apply {
-            // Set green background to prevent black screen
             setBackgroundColor(Color.parseColor("#4CAF50"))
             
             settings.apply {
@@ -78,13 +81,28 @@ class MainActivity : AppCompatActivity() {
             webViewClient = object : WebViewClient() {
                 override fun onPageStarted(view: WebView?, url: String?, favicon: android.graphics.Bitmap?) {
                     super.onPageStarted(view, url, favicon)
-                    progressBar.visibility = View.VISIBLE
+                    if (!isFirstLoad) {
+                        progressBar.visibility = View.VISIBLE
+                    }
                 }
                 
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     progressBar.visibility = View.GONE
                     swipeRefresh.isRefreshing = false
+                    
+                    // Hide loading screen on first load
+                    if (isFirstLoad) {
+                        loadingScreen.animate()
+                            .alpha(0f)
+                            .setDuration(300)
+                            .withEndAction {
+                                loadingScreen.visibility = View.GONE
+                            }
+                            .start()
+                        isFirstLoad = false
+                    }
+                    
                     injectAppTheme()
                 }
 
@@ -121,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
             webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                    if (newProgress < 100) {
+                    if (newProgress < 100 && !isFirstLoad) {
                         progressBar.visibility = View.VISIBLE
                         progressBar.progress = newProgress
                     } else {
