@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.webkit.*
 import android.widget.FrameLayout
@@ -20,8 +22,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
     private lateinit var swipeRefresh: SwipeRefreshLayout
-    private lateinit var loadingScreen: FrameLayout
+    private lateinit var loadingOverlay: FrameLayout
     private var isFirstLoad = true
+    private val handler = Handler(Looper.getMainLooper())
 
     companion object {
         private const val SITE_URL = "https://plantalivre.pt"
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById(R.id.webView)
         progressBar = findViewById(R.id.progressBar)
         swipeRefresh = findViewById(R.id.swipeRefresh)
-        loadingScreen = findViewById(R.id.loadingScreen)
+        loadingOverlay = findViewById(R.id.loadingOverlay)
 
         setupWebView()
         setupSwipeRefresh()
@@ -91,15 +94,11 @@ class MainActivity : AppCompatActivity() {
                     progressBar.visibility = View.GONE
                     swipeRefresh.isRefreshing = false
                     
-                    // Hide loading screen on first load
+                    // Hide loading overlay on first load with delay to ensure content is rendered
                     if (isFirstLoad) {
-                        loadingScreen.animate()
-                            .alpha(0f)
-                            .setDuration(300)
-                            .withEndAction {
-                                loadingScreen.visibility = View.GONE
-                            }
-                            .start()
+                        handler.postDelayed({
+                            hideLoadingOverlay()
+                        }, 800) // Wait 800ms after onPageFinished to ensure content is visible
                         isFirstLoad = false
                     }
                     
@@ -142,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                     if (newProgress < 100 && !isFirstLoad) {
                         progressBar.visibility = View.VISIBLE
                         progressBar.progress = newProgress
-                    } else {
+                    } else if (newProgress >= 100) {
                         progressBar.visibility = View.GONE
                     }
                 }
@@ -158,6 +157,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    
+    private fun hideLoadingOverlay() {
+        loadingOverlay.animate()
+            .alpha(0f)
+            .setDuration(500) // 500ms fade out
+            .withEndAction {
+                loadingOverlay.visibility = View.GONE
+            }
+            .start()
     }
 
     private fun setupSwipeRefresh() {
@@ -219,6 +228,7 @@ class MainActivity : AppCompatActivity() {
     
     override fun onDestroy() {
         super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
         webView.destroy()
     }
 }

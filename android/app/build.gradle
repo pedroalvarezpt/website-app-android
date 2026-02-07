@@ -16,12 +16,24 @@ android {
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Build optimizations
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            // Disable debug logging in release
+            buildConfigField "boolean", "DEBUG_MODE", "false"
+        }
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            buildConfigField "boolean", "DEBUG_MODE", "true"
         }
     }
 
@@ -36,6 +48,14 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
+    }
+    
+    // Optimize APK size
+    packagingOptions {
+        resources {
+            excludes += ['/META-INF/{AL2.0,LGPL2.1}']
+        }
     }
 }
 

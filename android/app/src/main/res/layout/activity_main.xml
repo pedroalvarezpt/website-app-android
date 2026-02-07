@@ -1,48 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/plantalivre_primary">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <!-- Main Content: SwipeRefresh + WebView -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/plantalivre_primary">
 
-        <!-- WebView -->
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/plantalivre_primary" />
-
-        <!-- Progress Bar (top) -->
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_gravity="top"
-            android:progressTint="@color/white"
-            android:visibility="gone" />
-
-        <!-- Loading Screen Overlay -->
         <FrameLayout
-            android:id="@+id/loadingScreen"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/plantalivre_primary"
-            android:visibility="visible">
+            android:layout_height="match_parent">
+
+            <!-- WebView -->
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/plantalivre_primary" />
+
+            <!-- Progress Bar (top) -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_gravity="top"
+                android:progressTint="@color/white"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- Loading Overlay (on top of everything) -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/plantalivre_primary"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="10dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
 
             <!-- Logo Centered -->
             <ImageView
                 android:id="@+id/loadingLogo"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:src="@mipmap/ic_launcher"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitCenter" />
 
             <!-- Loading Indicator Below Logo -->
             <ProgressBar
@@ -50,12 +69,11 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="24dp"
                 android:indeterminateTint="@color/white" />
 
-        </FrameLayout>
+        </LinearLayout>
 
     </FrameLayout>
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</FrameLayout>
