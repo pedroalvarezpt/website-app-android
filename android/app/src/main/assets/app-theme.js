@@ -26,8 +26,14 @@
       .app-header { padding-top: env(safe-area-inset-top); }
       .app-footer { padding-bottom: env(safe-area-inset-bottom); }
       ::-webkit-scrollbar { width: 0px; background: transparent; }
+      
+      /* TEST: Opacity on .image class */
+      .image {
+        opacity: 0.5 !important;
+      }
     `;
     document.head.appendChild(style);
+    console.log('[PlantaLivre App] CSS injected - .image opacity set to 0.5');
   };
 
   const hasBridge = typeof window.AndroidBridge !== 'undefined';
