@@ -54,12 +54,12 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <!-- Logo Centered (usando splash_logo.png do drawable) -->
+            <!-- Logo Centered (fallback to ic_launcher until splash_logo.png is added) -->
             <ImageView
                 android:id="@+id/loadingLogo"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:src="@drawable/splash_logo"
+                android:src="@mipmap/ic_launcher"
                 android:contentDescription="@string/app_name"
                 android:scaleType="fitCenter" />
 

@@ -27,13 +27,13 @@
       .app-footer { padding-bottom: env(safe-area-inset-bottom); }
       ::-webkit-scrollbar { width: 0px; background: transparent; }
       
-      /* TEST: Opacity on .image class */
-      .image {
-        opacity: 0.5 !important;
+      /* TEST: Red border on all img elements */
+      img {
+        border: 2px solid red !important;
       }
     `;
     document.head.appendChild(style);
-    console.log('[PlantaLivre App] CSS injected - .image opacity set to 0.5');
+    console.log('[PlantaLivre App] CSS injected - red border applied to all img elements');
   };
 
   const hasBridge = typeof window.AndroidBridge !== 'undefined';
